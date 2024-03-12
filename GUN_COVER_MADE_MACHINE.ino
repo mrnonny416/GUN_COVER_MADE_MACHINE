@@ -117,7 +117,7 @@ void setup() {
 
 void loop() {
   buttonGreen();
-  // buttonRed();
+  buttonRed();
   subHeater();
   heatingFlow();
   heatCountdown();
