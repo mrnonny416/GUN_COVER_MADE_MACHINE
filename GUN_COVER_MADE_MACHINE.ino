@@ -1,42 +1,42 @@
-#define SENSOR_TEMPERATURE_OUT 5  // write VCC
-#define BUTTON_PROCESS_OUT 40     // write VCC
-#define BUTTON_EMERGENCY_OUT 42   // write VCC
+#define SENSOR_TEMPERATURE_OUT 5 // write VCC
+#define BUTTON_PROCESS_OUT 40    // write VCC
+#define BUTTON_EMERGENCY_OUT 42  // write VCC
 
-#define SENSOR_SWITCH_FRONT_OUT 22   // write VCC
-#define SENSOR_SWITCH_BACK_OUT 23    // write VCC
-#define SENSOR_SWITCH_TOP_OUT 24     // write VCC
-#define SENSOR_SWITCH_BOTTON_OUT 25  // write VCC
-#define RELAY_1_VAC 50               // write VCC
-#define RELAY_2_LIG 51               // write VCC
+#define SENSOR_SWITCH_FRONT_OUT 22  // write VCC
+#define SENSOR_SWITCH_BACK_OUT 23   // write VCC
+#define SENSOR_SWITCH_TOP_OUT 24    // write VCC
+#define SENSOR_SWITCH_BOTTON_OUT 25 // write VCC
+#define RELAY_1_VAC 50              // write VCC
+#define RELAY_2_LIG 51              // write VCC
 
-#define VACCUM_RELAY 14        // write
-#define LIGHT_YELLOW_RELAY 15  // write
-#define LIGHT_BLUE_RELAY 16    // write
-#define LIGHT_GREEN_RELAY 17   // write
+#define VACCUM_RELAY 14       // write
+#define LIGHT_YELLOW_RELAY 15 // write
+#define LIGHT_BLUE_RELAY 16   // write
+#define LIGHT_GREEN_RELAY 17  // write
 
-#define STEP_MOTOR_PULSE_X 30   // write
-#define STEP_MOTOR_ENABLE_X 31  // write
-#define STEP_MOTOR_DIRECT_X 32  // write
-#define STEP_MOTOR_PULSE_Y 34   // write
-#define STEP_MOTOR_ENABLE_Y 35  // write
-#define STEP_MOTOR_DIRECT_Y 36  // write
+#define STEP_MOTOR_PULSE_X 30  // write
+#define STEP_MOTOR_ENABLE_X 31 // write
+#define STEP_MOTOR_DIRECT_X 32 // write
+#define STEP_MOTOR_PULSE_Y 34  // write
+#define STEP_MOTOR_ENABLE_Y 35 // write
+#define STEP_MOTOR_DIRECT_Y 36 // write
 
-#define SENSOR_TEMPERATURE 4     // read
-#define BUTTON_PROCESS 6         // read
-#define BUTTON_EMERGENCY 7       // read
-#define SENSOR_SWITCH_FRONT 10   // read
-#define SENSOR_SWITCH_BACK 11    // read
-#define SENSOR_SWITCH_TOP 12     // read
-#define SENSOR_SWITCH_BOTTON 13  // read
+#define SENSOR_TEMPERATURE 4    // read
+#define BUTTON_PROCESS 6        // read
+#define BUTTON_EMERGENCY 7      // read
+#define SENSOR_SWITCH_FRONT 10  // read
+#define SENSOR_SWITCH_BACK 11   // read
+#define SENSOR_SWITCH_TOP 12    // read
+#define SENSOR_SWITCH_BOTTON 13 // read
 
-bool IS_PROCESS_START = true;  // yellow start
+bool IS_PROCESS_START = true; // yellow start
 bool IS_MOTOR_X_START_POSITION = false;
 bool IS_MOTOR_Y_START_POSITION = false;
-bool IS_BUTTON_PROCESS_CLICK = false;   // blue start
-bool IS_TEMP_LIMIT = false;             // green start
-bool IS_PROCESSION = false;             // start Timer
-bool IS_MOTOR_X_WORK_POSITION = false;  // start Timer
-bool IS_MOTOR_Y_WORK_POSITION = false;  // start Timer
+bool IS_BUTTON_PROCESS_CLICK = false;  // blue start
+bool IS_TEMP_LIMIT = false;            // green start
+bool IS_PROCESSION = false;            // start Timer
+bool IS_MOTOR_X_WORK_POSITION = false; // start Timer
+bool IS_MOTOR_Y_WORK_POSITION = false; // start Timer
 bool IS_COUNT_DOWN_HEAT = false;
 bool IS_COUNT_DOWN_PULL = false;
 unsigned long START_TIME = 0;
@@ -54,7 +54,8 @@ bool IS_VACCUM_WORK = false;
 bool RESULT = false;
 // all process done set default
 
-void setup() {
+void setup()
+{
   Serial.begin(115200);
   Serial.println("Setup");
   pinMode(SENSOR_SWITCH_FRONT_OUT, OUTPUT);
@@ -97,7 +98,7 @@ void setup() {
   digitalWrite(RELAY_1_VAC, HIGH);
   digitalWrite(RELAY_2_LIG, HIGH);
 
-  digitalWrite(VACCUM_RELAY, HIGH);  // active low
+  digitalWrite(VACCUM_RELAY, HIGH); // active low
   digitalWrite(LIGHT_YELLOW_RELAY, LOW);
   digitalWrite(LIGHT_BLUE_RELAY, HIGH);
   digitalWrite(LIGHT_GREEN_RELAY, HIGH);
@@ -107,7 +108,7 @@ void setup() {
   digitalWrite(STEP_MOTOR_DIRECT_X, HIGH);
   digitalWrite(STEP_MOTOR_PULSE_Y, HIGH);
   digitalWrite(STEP_MOTOR_ENABLE_Y, HIGH);
-  digitalWrite(STEP_MOTOR_DIRECT_Y, HIGH);  // LOW-UP
+  digitalWrite(STEP_MOTOR_DIRECT_Y, HIGH); // LOW-UP
 
   digitalWrite(SENSOR_TEMPERATURE_OUT, HIGH);
   digitalWrite(BUTTON_PROCESS_OUT, HIGH);
@@ -115,7 +116,8 @@ void setup() {
   Serial.println("Heating And Waiting Button Action...");
 }
 
-void loop() {
+void loop()
+{
   buttonGreen();
   buttonRed();
   subHeater();
@@ -129,9 +131,10 @@ void loop() {
   disableMotorY();
 }
 
-void buttonRed() {
-  int value = digitalRead(BUTTON_PROCESS);
-  if (value == 1) {
+void buttonRed()
+{
+  if (digitalRead(BUTTON_EMERGENCY)!= digitalRead(BUTTON_EMERGENCY_OUT))
+  {
     Serial.println("Emergency click");
     digitalWrite(SENSOR_SWITCH_FRONT_OUT, HIGH);
     digitalWrite(SENSOR_SWITCH_BACK_OUT, HIGH);
@@ -141,7 +144,7 @@ void buttonRed() {
     digitalWrite(RELAY_1_VAC, HIGH);
     digitalWrite(RELAY_2_LIG, HIGH);
 
-    digitalWrite(VACCUM_RELAY, HIGH);  // active low
+    digitalWrite(VACCUM_RELAY, HIGH); // active low
     digitalWrite(LIGHT_YELLOW_RELAY, HIGH);
     digitalWrite(LIGHT_BLUE_RELAY, HIGH);
     digitalWrite(LIGHT_GREEN_RELAY, HIGH);
@@ -151,23 +154,26 @@ void buttonRed() {
     digitalWrite(STEP_MOTOR_DIRECT_X, HIGH);
     digitalWrite(STEP_MOTOR_PULSE_Y, HIGH);
     digitalWrite(STEP_MOTOR_ENABLE_Y, HIGH);
-    digitalWrite(STEP_MOTOR_DIRECT_Y, HIGH);  // LOW-UP
+    digitalWrite(STEP_MOTOR_DIRECT_Y, HIGH); // LOW-UP
 
     digitalWrite(SENSOR_TEMPERATURE_OUT, HIGH);
     digitalWrite(BUTTON_PROCESS_OUT, HIGH);
     digitalWrite(BUTTON_EMERGENCY_OUT, 1);
     resetAll();
+  }else{
+        int value = digitalRead(BUTTON_EMERGENCY_OUT);
+    digitalWrite(BUTTON_EMERGENCY_OUT, !value);
   }
 }
 
-void buttonGreen() {
-  int value = digitalRead(BUTTON_PROCESS);
-  if (value == 1 && IS_PROCESS_START == true) {
+void buttonGreen()
+{
+  if (digitalRead(BUTTON_PROCESS) != digitalRead(BUTTON_PROCESS_OUT) && IS_PROCESS_START == true)
+  {
     Serial.println("Process click");
-    value = 0;
     IS_PROCESS_START = false;
     IS_BUTTON_PROCESS_CLICK = true;
-    digitalWrite(VACCUM_RELAY, LOW);  // active low
+    digitalWrite(VACCUM_RELAY, LOW); // active low
     digitalWrite(LIGHT_YELLOW_RELAY, HIGH);
     digitalWrite(LIGHT_BLUE_RELAY, LOW);
     digitalWrite(LIGHT_GREEN_RELAY, LOW);
@@ -175,16 +181,24 @@ void buttonGreen() {
     moveMotorY("up");
     Serial.println("wait temp");
   }
+  else
+  {
+    int value = digitalRead(BUTTON_PROCESS_OUT);
+    digitalWrite(BUTTON_PROCESS_OUT, !value);
+  }
 }
 
-void subHeater() {
-  if (IS_BUTTON_PROCESS_CLICK && digitalRead(STEP_MOTOR_ENABLE_X) == HIGH && digitalRead(STEP_MOTOR_ENABLE_Y) == HIGH) {
+void subHeater()
+{
+  if (IS_BUTTON_PROCESS_CLICK && digitalRead(STEP_MOTOR_ENABLE_X) == HIGH && digitalRead(STEP_MOTOR_ENABLE_Y) == HIGH)
+  {
     int value = digitalRead(SENSOR_TEMPERATURE);
     Serial.println("waiting...");
     Serial.println(value);
-    if (value == 1) {
+    if (value == 1)
+    {
       Serial.println("Temp is Limit");
-      digitalWrite(VACCUM_RELAY, LOW);  // active low
+      digitalWrite(VACCUM_RELAY, LOW); // active low
       digitalWrite(LIGHT_YELLOW_RELAY, LOW);
       digitalWrite(LIGHT_BLUE_RELAY, HIGH);
       digitalWrite(LIGHT_GREEN_RELAY, LOW);
@@ -194,9 +208,11 @@ void subHeater() {
   }
 }
 
-void heatingFlow() {
-  if (IS_TEMP_LIMIT) {
-    digitalWrite(VACCUM_RELAY, LOW);  // active low
+void heatingFlow()
+{
+  if (IS_TEMP_LIMIT)
+  {
+    digitalWrite(VACCUM_RELAY, LOW); // active low
     digitalWrite(LIGHT_YELLOW_RELAY, LOW);
     digitalWrite(LIGHT_BLUE_RELAY, LOW);
     digitalWrite(LIGHT_GREEN_RELAY, HIGH);
@@ -208,13 +224,16 @@ void heatingFlow() {
   }
 }
 
-void heatCountdown() {
-  if (IS_COUNT_DOWN_HEAT && digitalRead(STEP_MOTOR_ENABLE_X) == HIGH) {
+void heatCountdown()
+{
+  if (IS_COUNT_DOWN_HEAT && digitalRead(STEP_MOTOR_ENABLE_X) == HIGH)
+  {
     Serial.println("start Counting");
     Serial.println((TIMER_HEAT - (millis() - START_TIME)) / 1000);
     Serial.println("=========================================");
     delay(1000);
-    if (millis() - START_TIME >= TIMER_HEAT) {
+    if (millis() - START_TIME >= TIMER_HEAT)
+    {
       Serial.println("motor x out");
       IS_COUNT_DOWN_HEAT = false;
       moveMotorX("out");
@@ -223,8 +242,10 @@ void heatCountdown() {
   }
 }
 
-void pullFlow() {
-  if (IS_PULL_WORK && digitalRead(STEP_MOTOR_ENABLE_X) == HIGH) {
+void pullFlow()
+{
+  if (IS_PULL_WORK && digitalRead(STEP_MOTOR_ENABLE_X) == HIGH)
+  {
     Serial.println("motor y work");
     IS_PULL_WORK = false;
     moveMotorY("down");
@@ -232,8 +253,10 @@ void pullFlow() {
   }
 }
 
-void vaccumFlow() {
-  if (IS_VACCUM_WORK && digitalRead(STEP_MOTOR_ENABLE_Y) == HIGH) {
+void vaccumFlow()
+{
+  if (IS_VACCUM_WORK && digitalRead(STEP_MOTOR_ENABLE_Y) == HIGH)
+  {
     Serial.println("vaccum work");
     IS_COUNT_DOWN_PULL = true;
     IS_VACCUM_WORK = false;
@@ -242,13 +265,16 @@ void vaccumFlow() {
   }
 }
 
-void pullCountdown() {
-  if (IS_COUNT_DOWN_PULL) {
+void pullCountdown()
+{
+  if (IS_COUNT_DOWN_PULL)
+  {
     Serial.println("start Counting");
     Serial.println((TIMER_PULL - (millis() - START_TIME)) / 1000);
     Serial.println("=========================================");
     delay(1000);
-    if (millis() - START_TIME >= TIMER_PULL) {
+    if (millis() - START_TIME >= TIMER_PULL)
+    {
       Serial.println("work done");
       IS_COUNT_DOWN_PULL = false;
       moveVaccum("off");
@@ -258,22 +284,25 @@ void pullCountdown() {
   }
 }
 
-void setStart() {
-  if (RESULT && digitalRead(STEP_MOTOR_ENABLE_Y) == LOW) {
+void setStart()
+{
+  if (RESULT && digitalRead(STEP_MOTOR_ENABLE_Y) == LOW)
+  {
     resetAll();
   }
 }
 
-void resetAll() {
+void resetAll()
+{
   Serial.println("Please Click Green Button to continute");
-  IS_PROCESS_START = true;  // yellow start
+  IS_PROCESS_START = true; // yellow start
   IS_MOTOR_X_START_POSITION = false;
   IS_MOTOR_Y_START_POSITION = false;
-  IS_BUTTON_PROCESS_CLICK = false;   // blue start
-  IS_TEMP_LIMIT = false;             // green start
-  IS_PROCESSION = false;             // start Timer
-  IS_MOTOR_X_WORK_POSITION = false;  // start Timer
-  IS_MOTOR_Y_WORK_POSITION = false;  // start Timer
+  IS_BUTTON_PROCESS_CLICK = false;  // blue start
+  IS_TEMP_LIMIT = false;            // green start
+  IS_PROCESSION = false;            // start Timer
+  IS_MOTOR_X_WORK_POSITION = false; // start Timer
+  IS_MOTOR_Y_WORK_POSITION = false; // start Timer
   IS_COUNT_DOWN_HEAT = false;
   IS_COUNT_DOWN_PULL = false;
   RETURN_X_MOTOR = false;
@@ -285,34 +314,42 @@ void resetAll() {
   RESULT = false;
 }
 
-void moveMotorX(String direct) {
+void moveMotorX(String direct)
+{
   Serial.println("Motor X Controller");
-  if (direct == "out") {
+  if (direct == "out")
+  {
     digitalWrite(STEP_MOTOR_DIRECT_X, LOW);
     digitalWrite(STEP_MOTOR_ENABLE_X, LOW);
   }
-  if (direct == "in") {
+  if (direct == "in")
+  {
     digitalWrite(STEP_MOTOR_DIRECT_X, HIGH);
     digitalWrite(STEP_MOTOR_ENABLE_X, LOW);
   }
 }
 
-void moveMotorY(String direct) {
+void moveMotorY(String direct)
+{
   Serial.println("Motor Y Controller");
-  if (direct == "up") {
+  if (direct == "up")
+  {
     digitalWrite(STEP_MOTOR_DIRECT_Y, LOW);
     digitalWrite(STEP_MOTOR_ENABLE_Y, LOW);
   }
-  if (direct == "down") {
+  if (direct == "down")
+  {
     digitalWrite(STEP_MOTOR_DIRECT_Y, HIGH);
     digitalWrite(STEP_MOTOR_ENABLE_Y, LOW);
   }
 }
 
-void genPulse() {
+void genPulse()
+{
   int x_value = digitalRead(STEP_MOTOR_ENABLE_X);
   int y_value = digitalRead(STEP_MOTOR_ENABLE_Y);
-  if (x_value == 0 || y_value == 0) {
+  if (x_value == 0 || y_value == 0)
+  {
     digitalWrite(STEP_MOTOR_PULSE_X, HIGH);
     digitalWrite(STEP_MOTOR_PULSE_Y, HIGH);
     delay(1);
@@ -321,21 +358,32 @@ void genPulse() {
   }
 }
 
-void disableMotorX() {
-  if (digitalRead(STEP_MOTOR_ENABLE_X) == LOW) {
-    if (digitalRead(STEP_MOTOR_DIRECT_X) == LOW) {
-      if (digitalRead(SENSOR_SWITCH_FRONT) != digitalRead(SENSOR_SWITCH_FRONT_OUT)) {
+void disableMotorX()
+{
+  if (digitalRead(STEP_MOTOR_ENABLE_X) == LOW)
+  {
+    if (digitalRead(STEP_MOTOR_DIRECT_X) == LOW)
+    {
+      if (digitalRead(SENSOR_SWITCH_FRONT) != digitalRead(SENSOR_SWITCH_FRONT_OUT))
+      {
         Serial.println("motor x stop");
         digitalWrite(STEP_MOTOR_ENABLE_X, HIGH);
-      } else {
+      }
+      else
+      {
         int value = digitalRead(SENSOR_SWITCH_FRONT_OUT);
         digitalWrite(SENSOR_SWITCH_FRONT_OUT, !value);
       }
-    } else {
-      if (digitalRead(SENSOR_SWITCH_BACK) != digitalRead(SENSOR_SWITCH_BACK_OUT)) {
+    }
+    else
+    {
+      if (digitalRead(SENSOR_SWITCH_BACK) != digitalRead(SENSOR_SWITCH_BACK_OUT))
+      {
         Serial.println("motor x stop");
         digitalWrite(STEP_MOTOR_ENABLE_X, HIGH);
-      } else {
+      }
+      else
+      {
         int value = digitalRead(SENSOR_SWITCH_BACK_OUT);
         digitalWrite(SENSOR_SWITCH_BACK_OUT, !value);
       }
@@ -343,21 +391,32 @@ void disableMotorX() {
   }
 }
 
-void disableMotorY() {
-  if (digitalRead(STEP_MOTOR_ENABLE_Y) == LOW) {
-    if (digitalRead(STEP_MOTOR_DIRECT_Y) == LOW) {
-      if (digitalRead(SENSOR_SWITCH_TOP) != digitalRead(SENSOR_SWITCH_TOP_OUT)) {
+void disableMotorY()
+{
+  if (digitalRead(STEP_MOTOR_ENABLE_Y) == LOW)
+  {
+    if (digitalRead(STEP_MOTOR_DIRECT_Y) == LOW)
+    {
+      if (digitalRead(SENSOR_SWITCH_TOP) != digitalRead(SENSOR_SWITCH_TOP_OUT))
+      {
         Serial.println("motor y stop");
         digitalWrite(STEP_MOTOR_ENABLE_Y, HIGH);
-      } else {
+      }
+      else
+      {
         int value = digitalRead(SENSOR_SWITCH_TOP_OUT);
         digitalWrite(SENSOR_SWITCH_TOP_OUT, !value);
       }
-    } else {
-      if (digitalRead(SENSOR_SWITCH_BOTTON) != digitalRead(SENSOR_SWITCH_BOTTON_OUT)) {
+    }
+    else
+    {
+      if (digitalRead(SENSOR_SWITCH_BOTTON) != digitalRead(SENSOR_SWITCH_BOTTON_OUT))
+      {
         Serial.println("motor y stop");
         digitalWrite(STEP_MOTOR_ENABLE_Y, HIGH);
-      } else {
+      }
+      else
+      {
         int value = digitalRead(SENSOR_SWITCH_BOTTON_OUT);
         digitalWrite(SENSOR_SWITCH_BOTTON_OUT, !value);
       }
@@ -365,14 +424,18 @@ void disableMotorY() {
   }
 }
 
-void moveVaccum(String swt) {
-  if (swt == "on") {
-    digitalWrite(VACCUM_RELAY, HIGH);  // active low
+void moveVaccum(String swt)
+{
+  if (swt == "on")
+  {
+    digitalWrite(VACCUM_RELAY, HIGH); // active low
     digitalWrite(LIGHT_YELLOW_RELAY, LOW);
     digitalWrite(LIGHT_BLUE_RELAY, LOW);
     digitalWrite(LIGHT_GREEN_RELAY, HIGH);
-  } else {
-    digitalWrite(VACCUM_RELAY, LOW);  // active low
+  }
+  else
+  {
+    digitalWrite(VACCUM_RELAY, LOW); // active low
     digitalWrite(LIGHT_YELLOW_RELAY, HIGH);
     digitalWrite(LIGHT_BLUE_RELAY, LOW);
     digitalWrite(LIGHT_GREEN_RELAY, LOW);
