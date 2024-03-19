@@ -9,6 +9,7 @@
 #define SENSOR_SWITCH_BOTTON_OUT 25  // write VCC
 #define RELAY_1_VAC 50               // write VCC
 #define RELAY_2_LIG 51               // write VCC
+#define RELAY_3_TEMP 53              // write VCC
 
 #define VACCUM_RELAY 14        // write
 #define LIGHT_YELLOW_RELAY 15  // write
@@ -65,6 +66,7 @@ void setup() {
 
   pinMode(RELAY_1_VAC, OUTPUT);
   pinMode(RELAY_2_LIG, OUTPUT);
+  pinMode(RELAY_3_TEMP, OUTPUT);
 
   pinMode(VACCUM_RELAY, OUTPUT);
   pinMode(LIGHT_YELLOW_RELAY, OUTPUT);
@@ -98,6 +100,7 @@ void setup() {
 
   digitalWrite(RELAY_1_VAC, HIGH);
   digitalWrite(RELAY_2_LIG, HIGH);
+  digitalWrite(RELAY_3_TEMP, HIGH);
 
   digitalWrite(VACCUM_RELAY, LOW);  // active high
   digitalWrite(LIGHT_YELLOW_RELAY, HIGH);
