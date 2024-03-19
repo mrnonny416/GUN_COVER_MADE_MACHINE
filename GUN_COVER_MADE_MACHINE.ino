@@ -1,4 +1,5 @@
 #define SENSOR_TEMPERATURE_OUT 5  // write VCC
+#define SENSOR_TEMPERATURE_RELAY 53  // write VCC
 #define BUTTON_PROCESS_OUT 40     // write VCC
 #define BUTTON_EMERGENCY_OUT 42   // write VCC
 
@@ -78,6 +79,7 @@ void setup() {
   pinMode(STEP_MOTOR_DIRECT_Y, OUTPUT);
 
   pinMode(SENSOR_TEMPERATURE_OUT, OUTPUT);
+  pinMode(SENSOR_TEMPERATURE_RELAY, OUTPUT);
   pinMode(BUTTON_PROCESS_OUT, OUTPUT);
   pinMode(BUTTON_EMERGENCY_OUT, OUTPUT);
 
@@ -110,6 +112,7 @@ void setup() {
   digitalWrite(STEP_MOTOR_DIRECT_Y, HIGH);  // LOW-UP
 
   digitalWrite(SENSOR_TEMPERATURE_OUT, HIGH);
+  digitalWrite(SENSOR_TEMPERATURE_RELAY, HIGH);
   digitalWrite(BUTTON_PROCESS_OUT, HIGH);
   digitalWrite(BUTTON_EMERGENCY_OUT, 1);
   Serial.println("Heating And Waiting Button Action...");
@@ -182,10 +185,9 @@ void buttonGreen() {
 
 void subHeater() {
   if (IS_BUTTON_PROCESS_CLICK && digitalRead(STEP_MOTOR_ENABLE_X) == HIGH && digitalRead(STEP_MOTOR_ENABLE_Y) == HIGH) {
-    int value = digitalRead(SENSOR_TEMPERATURE);
+    int value = digitalRead(SENSOR_TEMPERATURE_RELAY);
     Serial.println("waiting...");
-    Serial.println(value);
-    if (value == 1) {
+    if (digitalRead(SENSOR_TEMPERATURE)!=value) {
       Serial.println("Temp is Limit");
     digitalWrite(VACCUM_RELAY, LOW);  // active high
     digitalWrite(LIGHT_YELLOW_RELAY, LOW);
@@ -193,6 +195,8 @@ void subHeater() {
     digitalWrite(LIGHT_GREEN_RELAY, LOW);
       IS_BUTTON_PROCESS_CLICK = false;
       IS_TEMP_LIMIT = true;
+    }else{
+    digitalWrite(SENSOR_TEMPERATURE_RELAY, !value);
     }
   }
 }
