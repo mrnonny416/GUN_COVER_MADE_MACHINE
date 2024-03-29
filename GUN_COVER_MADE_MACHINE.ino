@@ -174,8 +174,8 @@ void buttonGreen() {
     IS_PROCESS_START = false;
     IS_BUTTON_PROCESS_CLICK = true;
     digitalWrite(VACCUM_RELAY, LOW);  // active high
-    digitalWrite(LIGHT_YELLOW_RELAY, HIGH);
-    digitalWrite(LIGHT_BLUE_RELAY, LOW);
+    digitalWrite(LIGHT_YELLOW_RELAY, LOW);
+    digitalWrite(LIGHT_BLUE_RELAY, HIGH);
     digitalWrite(LIGHT_GREEN_RELAY, LOW);
     moveMotorX("out");
     moveMotorY("up");
@@ -194,8 +194,8 @@ void subHeater() {
       Serial.println("Temp is Limit");
     digitalWrite(VACCUM_RELAY, LOW);  // active high
     digitalWrite(LIGHT_YELLOW_RELAY, LOW);
-    digitalWrite(LIGHT_BLUE_RELAY, HIGH);
-    digitalWrite(LIGHT_GREEN_RELAY, LOW);
+    digitalWrite(LIGHT_BLUE_RELAY, LOW);
+    digitalWrite(LIGHT_GREEN_RELAY, HIGH);
       IS_BUTTON_PROCESS_CLICK = false;
       IS_TEMP_LIMIT = true;
     }else{
@@ -215,6 +215,7 @@ void heatingFlow() {
     IS_TEMP_LIMIT = false;
     IS_COUNT_DOWN_HEAT = true;
     START_TIME = millis();
+     moveVaccum("on");
   }
 }
 
