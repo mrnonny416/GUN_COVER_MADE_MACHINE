@@ -248,7 +248,6 @@ void vaccumFlow() {
     Serial.println("vaccum work");
     IS_COUNT_DOWN_PULL = true;
     IS_VACCUM_WORK = false;
-    moveVaccum("on");
     START_TIME = millis();
   }
 }
