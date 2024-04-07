@@ -9,7 +9,7 @@
 #define SENSOR_SWITCH_BOTTON_OUT 25  // write VCC
 #define RELAY_1_VAC 50               // write VCC
 #define RELAY_2_LIG 51               // write VCC
-#define RELAY_3_TEMP 53              // write VCC
+#define RELAY_3_TEMP 52              // write VCC
 
 #define VACCUM_RELAY 14        // write
 #define LIGHT_YELLOW_RELAY 15  // write
@@ -188,7 +188,7 @@ void buttonGreen() {
 
 void subHeater() {
   if (IS_BUTTON_PROCESS_CLICK && digitalRead(STEP_MOTOR_ENABLE_X) == HIGH && digitalRead(STEP_MOTOR_ENABLE_Y) == HIGH) {
-    int value = digitalRead(SENSOR_TEMPERATURE_RELAY);
+    int value = digitalRead(SENSOR_TEMPERATURE_OUT);//ต่อ 53 temp
     Serial.println("waiting...");
     if (digitalRead(SENSOR_TEMPERATURE)!=value) {
       Serial.println("Temp is Limit");
@@ -199,7 +199,7 @@ void subHeater() {
       IS_BUTTON_PROCESS_CLICK = false;
       IS_TEMP_LIMIT = true;
     }else{
-    digitalWrite(SENSOR_TEMPERATURE_RELAY, !value);
+    digitalWrite(SENSOR_TEMPERATURE_OUT, !value);
     }
   }
 }
